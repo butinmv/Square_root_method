@@ -1,6 +1,22 @@
 eps = 1e-10    # погрешность
 
 
+# Функция знака;
+def sign(number):
+    if number > 0:
+        flag = 1
+    else:
+        flag = -1
+    return flag
+
+
+# Проверка на ноль
+def checkZero(number):
+    if abs(number) < eps:
+        return 1
+    return 0
+
+
 # Проверка матрицы на симметричность
 def checkSymmet(a):
     n = len(arr)
@@ -27,12 +43,6 @@ def displayStartMatrix(a):
     print("")
 
 
-# Создание матрицы A
-def getMatrixA(arr):
-    a = arr[:, :-1]
-    return a
-
-
 # Функция вывода матрицы A на экран
 def displayMatrix(a):
     n = len(a)
@@ -44,19 +54,34 @@ def displayMatrix(a):
     print("")
 
 
+# Перестановка строк в матрице
+def swapRow(a, first_row, second_row=0):
+    n = len(a)
+    for i in range(n + 1):
+        tmp = a[first_row][i]
+        a[first_row][i] = a[second_row][i]
+        a[second_row][i] = tmp
+
+
+# Перестановка столбцов в матрице
+def swapColumn(a, first_col, second_col=0):
+    n = len(a)
+    for i in range(n):
+        tmp = a[i][first_col]
+        a[i][first_col] = a[i][second_col]
+        a[i][second_col] = tmp
+
+
+# Создание матрицы A
+def getMatrixA(arr):
+    a = arr[:, :-1]
+    return a
+
+
 # Создание матрицы B
 def getMatrixB(arr):
     b = arr[:, -1]
     return b
-
-
-# Функция знака;
-def sign(number):
-    if number > 0:
-        flag = 1
-    else:
-        flag = -1
-    return flag
 
 
 # Создание матрицы D и S
@@ -77,14 +102,15 @@ def getMatrixDS(a):
         for l in range(i):
             sum += s[l][i] * s[l][i] * d[l][l]
 
+
         d[i][i] = sign(a[i][i] - sum)
         s[i][i] = math.sqrt(abs(a[i][i] - sum))
 
         for j in range(i + 1, n):
-            sum = 0;
+            sum = 0
             for l in range(n):
                 sum += s[l][i] * s[l][j] * d[l][l]
-                s[i][j] = (a[i][j] - sum) / s[i][i] / d[i][i]
+            s[i][j] = (a[i][j] - sum) / s[i][i] / d[i][i]
     return d, s
 
 
@@ -102,8 +128,8 @@ if __name__ == "__main__":
     import copy as cp
     import math
 
-    arr = np.loadtxt('input.txt', float) # считываем с файла массив
-    copy_arr = cp.deepcopy(arr)
+    arr = np.loadtxt('input.txt', float)    # считываем с файла массив
+    #copy_arr = cp.deepcopy(arr)
 
     checkSymmet(arr)
 
@@ -111,16 +137,19 @@ if __name__ == "__main__":
     displayStartMatrix(arr)
 
     print("Матрица A:")
-    a = getMatrixA(copy_arr)
+    a = getMatrixA(arr)
     displayMatrix(a)
 
     print("Матрица B:")
-    b = getMatrixB(copy_arr)
+    b = getMatrixB(arr)
     displayMatrixB(b)
 
-    d, s = getMatrixDS(copy_arr)
+    '''
+    d, s = getMatrixDS(arr)
     print("Матрица D:")
     displayMatrix(d)
     print("Матрица S:")
     displayMatrix(s)
+    '''
+
 
